@@ -14,18 +14,47 @@ import "./TableContents.css";
 import { UserContext } from "../../context";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
+import Pagination from "../Pagination/Pagination";
 
 
 export default function TableContents() {
   const { users, setUsers, formData, setFormData } = useContext(UserContext);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentUsers, setCurrentUsers] = useState([]);
+  const usersPerPage = 3;
 
   const performApi = async () => {
     const response = await axios.get(config.endpoint);
     const result = response.data;
     setUsers(result);
-    
+    setCurrentUsers(result);
   };
+
+  useEffect(()=>{
+let indexOfLastUser = currentPage * usersPerPage;
+let indexOfFirstUser = indexOfLastUser - usersPerPage;
+
+const userSlice = users.slice(indexOfFirstUser, indexOfLastUser);
+
+if(userSlice.length === 0){
+    setCurrentPage(1)
+};
+
+setCurrentUsers(userSlice)
+  },[users, currentPage]);
+
+  const previousPage = () => {
+    if(currentPage > 1){
+        setCurrentPage(currentPage - 1)
+    }
+  };
+
+  const nextPage = (maxPageLength) => {
+    if(currentPage < maxPageLength){
+        setCurrentPage(currentPage + 1)
+    }
+  }
 
   const performDelete = async (id) => {
     try {
@@ -63,7 +92,7 @@ export default function TableContents() {
   }, []);
 
   return (
-    <Box>
+    <Box sx={{display:"flex", flexDirection:"column", justifyContent:"center",alignItems:"center", gap:"10px"}}>
       <div className="form-container">
         <h3>Add User:</h3>
         <AddUser handleSubmit={handleSubmit} />
@@ -93,7 +122,7 @@ export default function TableContents() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user, id) => (
+            {currentUsers.map((user, id) => (
               <TableRow
                 key={id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -138,7 +167,13 @@ export default function TableContents() {
           </TableBody>
         </Table>
       </TableContainer>
-
+<Pagination 
+previousPage={previousPage}
+nextPage={nextPage}
+currentPage={currentPage}
+totalUsers={users.length}
+usersPerPage={usersPerPage}
+/>
     </Box>
   );
 }
