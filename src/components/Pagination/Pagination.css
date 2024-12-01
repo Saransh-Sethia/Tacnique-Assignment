@@ -1,18 +1,29 @@
-button{
-    border: 1px solid #bac6f7;
-    padding: 15px 20px;
-    background-color: #bac6f7;
-    color: #070333;
-    cursor: pointer;
-    font-weight: 600;
-    border-radius: 10px;
+button {
+  border: 1px solid #bac6f7;
+  padding: 15px 20px;
+  background-color: #bac6f7;
+  color: #070333;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 10px;
 }
 
-.page-btn{
-    border: 1px solid #070333;
-    padding: 15px 20px;
-    background-color: #070333;
-    color: #bac6f7;
-    font-weight: 600;
-    border-radius: 10px;
+.page-btn {
+  border: 1px solid #070333;
+  padding: 15px 20px;
+  background-color: #070333;
+  color: #bac6f7;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+@media (max-width: 800px) {
+  .btn {
+    display: flex;
+    flex-direction: column;
+  }
+
+  button{
+    padding: 10px 10px
+  }
 }
