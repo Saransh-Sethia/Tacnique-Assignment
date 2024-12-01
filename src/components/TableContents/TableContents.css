@@ -1,0 +1,33 @@
+.form-container{
+    margin-left: 15px;
+    padding-top: 15px;
+}
+
+.Edit-button{
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px 10px 25px;
+    border: 1px solid #ffffff;
+    border-radius: 100px;
+    color: #ffffff;
+    background-color: rgb(2, 46, 2);
+}
+
+.delete-button{
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px 10px 25px;
+    border: 1px solid #ffffff;
+    border-radius: 100px;
+    color: #ffffff;
+    background-color: #4d0c03;
+}
+
+@media(max-width:'800px'){
+    .secondary-buttons{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap:50px
+    }
+
+}

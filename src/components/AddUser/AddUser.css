@@ -1,0 +1,6 @@
+@media(max-width: 800px){
+    .add-user{
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
+  }
