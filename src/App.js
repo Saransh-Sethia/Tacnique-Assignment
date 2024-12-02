@@ -7,6 +7,7 @@ import UserEdit from './components/UserEdit/UserEdit';
 function App() {
   return (
     <div className="App">
+    <h1 className='heading'>User Management Dashboard</h1>
 <Routes>
   <Route path='/' element={<TableContents />}></Route>
   <Route path='/:id' element={<UserEdit />}></Route>

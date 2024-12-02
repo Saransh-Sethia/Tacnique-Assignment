@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context";
 
 const UserEdit = () => {
-  const { users, setUsers } = useContext(UserContext);
+  const { users, setUsers,emailRegex } = useContext(UserContext);
   const { id } = useParams();
   const [updateData, setUpdateData] = useState({
     id: id,
@@ -47,28 +47,34 @@ const UserEdit = () => {
   };
 
   const handleSubmit = async (editedUser) => {
-    try {
-      if (
-        updateData.username.length === 0 ||
-        updateData.name.length === 0 ||
-        updateData.email.length === 0 ||
-        updateData.address.city.length === 0
-      ) {
-        alert("Kindly Fill all the details");
-        return;
+    if(updateData.username.length>2 && updateData.name.length>2 && emailRegex.test(updateData.email) && updateData.address.city.length>3){
+      try {
+        if (
+          updateData.username.length === 0 ||
+          updateData.name.length === 0 ||
+          updateData.email.length === 0 ||
+          updateData.address.city.length === 0
+        ) {
+          alert("Kindly Fill all the details");
+          return;
+        }
+        const response = await axios.put(
+          `${config.endpoint}/${editedUser.id}`,
+          editedUser
+        );
+        const result = await response.data;
+        
+  
+        return result;
+      } catch (error) {
+        console.log("error", error);
+        throw error
       }
-      const response = await axios.put(
-        `${config.endpoint}/${editedUser.id}`,
-        editedUser
-      );
-      const result = await response.data;
-      
-
-      return result;
-    } catch (error) {
-      console.log("error", error);
-      throw error
+    }else{
+      alert("Please Provide a Valid input || Valid inputs are: 1. Username more than 2 words 2.Name more than 2 words 3. Valid Email  4. City more than 3 words ");
+      return;
     }
+   
   }
   const editUserHandler = (updateData) => {
     let existingUser = users.find((user) => user.id === Number(updateData.id));

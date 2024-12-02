@@ -18,7 +18,7 @@ import Pagination from "../Pagination/Pagination";
 
 
 export default function TableContents() {
-  const { users, setUsers, formData, setFormData } = useContext(UserContext);
+  const { users, setUsers, formData, setFormData, emailRegex } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentUsers, setCurrentUsers] = useState([]);
@@ -72,19 +72,26 @@ setCurrentUsers(userSlice)
   };
 
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-
-      const response = await axios.post(`${config.endpoint}`, formData);
-      const result = await response.data;
-
-     
-      setUsers((prev) => [...prev, { ...result }]);
-      
-      setFormData({ username: "", name: "", email: "", address: { city: "" } });
-    } catch (error) {
-      console.log("error", error);
+    if(formData.name?.length>2 && emailRegex.test(formData.email) && formData.address.city?.length>3){
+      try {
+        e.preventDefault();
+  
+        const response = await axios.post(`${config.endpoint}`, formData);
+        const result = await response.data;
+  
+       
+        setUsers((prev) => [...prev, { ...result }]);
+        
+        setFormData({ username: "", name: "", email: "", address: { city: "" } });
+      } catch (error) {
+        console.log("error", error);
+        throw error
+      }
+    }else {
+      alert("Please Provide a Valid input || Valid inputs are: 1. Username more than 2 words 2.Name more than 2 words 3. Valid Email  4. City more than 3 words ");
+      return;
     }
+
   };
 
   useEffect(() => {
